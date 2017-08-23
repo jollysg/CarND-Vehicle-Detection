@@ -392,8 +392,7 @@ imageArray = mpimg.imread(cars[0])
 print(imageArray.shape)
 
 
-# Reduce the sample size because
-# The quiz evaluator times out after 13s of CPU time
+# Reduce the sample size for quick training
 sample_size = 1000
 cars = cars[0:sample_size]
 notcars = notcars[0:sample_size]
@@ -620,7 +619,7 @@ def process_video(image):
 #     draw_image = process_image(image)
 
 
-video_name = 'project_video_out8.mp4'
+video_name = 'project_video_out7.mp4'
 clip = VideoFileClip('project_video.mp4')
 white_clip = clip.fl_image(process_video)  # NOTE: this function expects color images!!
 white_clip.write_videofile(video_name, audio=False)
