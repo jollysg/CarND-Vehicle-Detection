@@ -21,6 +21,7 @@ The goals / steps of this project are the following:
 [video2]: ./output_images/test_video_out8.mp4
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points
+
 ###Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
 ---
