@@ -80,7 +80,7 @@ Following are the links to my video results:
 
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
-This worked fine for the individual frame, however it led to very wobbly boxes, also occasional dissappearance of them. So to further refine the detections, I implemented a short term memory of the bounding boxes in the code. All the detections for the last 15 frames were stored, and a combined heat map was generated from all of them. To reduce the false negatives, thresholding was used, with the value chosen experimentally to half the number of frames in history. This resulted in a relatively less wobbly boxes in the video.
+This worked fine for the individual frame, however it led to very wobbly boxes, also occasional dissappearance of them. So to further refine the detections, I implemented a short term memory of the bounding boxes in the code. All the detections for the last 15 frames were stored, and a combined heat map was generated from all of them. To reduce the false negatives, thresholding was used, with the value chosen experimentally to half the number of frames in history. This resulted in a relatively less wobbly boxes in the video. The code for this can be found in the lines 580 to 586 in the process_video function of the vehicleDetection.py file.
   
 ---
 
@@ -98,7 +98,7 @@ For performance optimization, the window search is carried out in a region of in
 There is a portion of the video where the color of the road changes from dark gray to light due to change in the conditions (tar to concrete). The detections fail around this point. For this perhaps the classifier needs to be trained with a few images from this segment of the road.
 
 #####3. Multiple cars in proximity to each other
-The detector will fail when multiple cars are in proximity of each other in the image. Due to the implementation, the detector will group the heatmaps from both the cars together and there is no way for it to know that the maps are for different objects. For this the detected number of objects will have to be tracked separately with a more advanced filter like a Kalman filter.
+The detector will fail when multiple cars are in proximity of each other in the image. Due to the implementation, the detector will group the heatmaps from both the cars together and there is no way for it to know that the maps are for different objects. For this the detected number of objects will have to be tracked separately with a more sophisticated filter like a Kalman filter.
 
 
    
