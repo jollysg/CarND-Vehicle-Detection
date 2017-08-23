@@ -1,8 +1,3 @@
-##Writeup Template
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
 **Vehicle Detection Project**
 
 The goals / steps of this project are the following:
@@ -81,6 +76,7 @@ Ultimately I searched using YCrCb 3-channel HOG features plus spatially binned c
 Following are the links to my video results:
 
 [Project Video][video1]
+
 [Test Video][video2]
 
 
@@ -88,7 +84,7 @@ Following are the links to my video results:
 
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
-This worked fine for individual frame, however it lead to very wobbly boxes, also occasional dissappearance of them. So to further refine the detections, I implemented a short term memory of the bounding boxes in the code. All the bounding boxes detected for the last 15 frames were stored, and the heat map was generated from them. To reduce the false negatives, thresholding was used, with the value chosen experimentally to half the number of frames of history.
+This worked fine for the individual frame, however it led to very wobbly boxes, also occasional dissappearance of them. So to further refine the detections, I implemented a short term memory of the bounding boxes in the code. All the detections for the last 15 frames were stored, and a combined heat map was generated from all of them. To reduce the false negatives, thresholding was used, with the value chosen experimentally to half the number of frames in history. This resulted in a relatively less wobbly boxes in the video.
   
 ---
 
@@ -96,5 +92,18 @@ This worked fine for individual frame, however it lead to very wobbly boxes, als
 
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+The approach taken has been elaborated in the implementation section of the writeup. following are the problems that I see with the implementation:
+
+
+#####1. Performance around the edges of the region of interest
+For performance optimization, the window search is carried out in a region of interest of every frame, which is mainly bottom half of the image. The detector performs relatively well when the car is well within the region of the interest, however on the edges, the boxes become wobbly. As a result, when the car goes too far away from the camera or towards the edge(the white car in the project video), it is not detected. For this window scaling will have to be optimized to cover all the pixels in the corner properly. Currently due to the scales chosen, the pixels on the right size of the image are not searched. 
+
+#####2. Performance when the road condition changes
+There is a portion of the video where the color of the road changes from dark gray to light due to change in the conditions (tar to concrete). The detections fail around this point. For this perhaps the classifier needs to be trained with a few images from this segment of the road.
+
+#####3. Multiple cars in proximity to each other
+The detector will fail when multiple cars are in proximity of each other in the image. Due to the implementation, the detector will group the heatmaps from both the cars together and there is no way for it to know that the maps are for different objects. For this the detected number of objects will have to be tracked separately with a more advanced filter like a Kalman filter.
+
+
+   
 
